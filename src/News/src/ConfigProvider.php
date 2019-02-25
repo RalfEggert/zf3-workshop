@@ -4,6 +4,9 @@ namespace News;
 
 use News\Handler\ListNewsHandler;
 use News\Handler\ListNewsHandlerFactory;
+use News\Repository\NewsRepository;
+use News\Repository\NewsRepositoryFactory;
+use News\Repository\NewsRepositoryInterface;
 
 /**
  * Class ConfigProvider
@@ -31,6 +34,8 @@ class ConfigProvider
         return [
             'factories' => [
                 ListNewsHandler::class => ListNewsHandlerFactory::class,
+
+                NewsRepositoryInterface::class => NewsRepositoryFactory::class,
             ],
         ];
     }

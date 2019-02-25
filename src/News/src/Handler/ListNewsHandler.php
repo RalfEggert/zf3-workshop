@@ -2,6 +2,7 @@
 
 namespace News\Handler;
 
+use News\Repository\NewsRepositoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -18,14 +19,19 @@ class ListNewsHandler implements RequestHandlerInterface
     /** @var TemplateRendererInterface */
     private $template;
 
+    /** @var NewsRepositoryInterface */
+    private $newsRepository;
+
     /**
      * ListNewsHandler constructor.
      *
      * @param TemplateRendererInterface $template
+     * @param NewsRepositoryInterface   $newsRepository
      */
-    public function __construct(TemplateRendererInterface $template)
+    public function __construct(TemplateRendererInterface $template, NewsRepositoryInterface $newsRepository)
     {
-        $this->template = $template;
+        $this->template       = $template;
+        $this->newsRepository = $newsRepository;
     }
 
     /**
@@ -35,6 +41,10 @@ class ListNewsHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return new HtmlResponse($this->template->render('news::list'));
+        $data = [
+            'newsList' => $this->newsRepository->getNewsList(),
+        ];
+
+        return new HtmlResponse($this->template->render('news::list', $data));
     }
 }

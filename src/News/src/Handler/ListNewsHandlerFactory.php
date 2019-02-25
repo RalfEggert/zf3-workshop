@@ -3,6 +3,7 @@
 namespace News\Handler;
 
 use Interop\Container\ContainerInterface;
+use News\Repository\NewsRepositoryInterface;
 use Zend\Expressive\Template\TemplateRendererInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
@@ -25,6 +26,9 @@ class ListNewsHandlerFactory implements FactoryInterface
         /** @var TemplateRendererInterface $template */
         $template = $container->get(TemplateRendererInterface::class);
 
-        return new ListNewsHandler($template);
+        /** @var NewsRepositoryInterface $newsRepository */
+        $newsRepository = $container->get(NewsRepositoryInterface::class);
+
+        return new ListNewsHandler($template, $newsRepository);
     }
 }

@@ -1,1 +1,6 @@
 <h1>News</h1>
+<ul>
+    <?php foreach ($this->newsList as $news) : ?>
+      <li><?= $news['title'] ?></li>
+    <?php endforeach; ?>
+</ul>
