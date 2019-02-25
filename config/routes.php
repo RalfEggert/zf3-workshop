@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use News\Handler\ListNewsHandler;
+use News\Handler\ShowNewsHandler;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
 use Zend\Expressive\MiddlewareFactory;
@@ -34,7 +35,11 @@ use Zend\Expressive\MiddlewareFactory;
  * );
  */
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
+    $idOptions = ['constraints' => ['id' => '[1-9][0-9]*']];
+
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
+
     $app->get('/news', ListNewsHandler::class, 'news-list');
+    $app->get('/news/:id', ShowNewsHandler::class, 'news-show')->setOptions($idOptions);
 };

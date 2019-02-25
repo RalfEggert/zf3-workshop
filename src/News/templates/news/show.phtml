@@ -1,0 +1,12 @@
+<?php
+$news = $this->news;
+?>
+<div class="card mb-5">
+    <div class="card-header">
+        <h1 class="mb-0"><?= $news['title'] ?></h1>
+    </div>
+    <div class="card-body">
+        <p><em>Bad Soden, am <?= $news['date'] ?></em></p>
+        <?= $news['text'] ?>
+    </div>
+</div>

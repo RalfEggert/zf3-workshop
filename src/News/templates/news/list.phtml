@@ -1,5 +1,5 @@
 <h1>News</h1>
-<?php foreach ($this->newsList as $news) : ?>
+<?php foreach ($this->newsList as $newsId => $news) : ?>
   <div class="card mb-5">
     <div class="card-header">
       <h2 class="mb-0"><?= $news['title'] ?></h2>
@@ -7,6 +7,9 @@
     <div class="card-body">
       <p><em>Bad Soden, am <?= $news['date'] ?></em></p>
         <?= $news['text'] ?>
+    </div>
+    <div class="card-footer">
+      <a href="<?= $this->url('news-show', ['id' => $newsId]) ?>" class="btn btn-primary">Mehr lesen</a>
     </div>
   </div>
 <?php endforeach; ?>

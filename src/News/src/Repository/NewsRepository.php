@@ -29,4 +29,18 @@ class NewsRepository implements NewsRepositoryInterface
     {
         return $this->data;
     }
+
+    /**
+     * @param int $id
+     *
+     * @return array|null
+     */
+    public function getNewsById(int $id): ?array
+    {
+        if (!isset($this->data[$id])) {
+            return null;
+        }
+
+        return $this->data[$id];
+    }
 }
