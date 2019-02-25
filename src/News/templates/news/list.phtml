@@ -1,6 +1,12 @@
 <h1>News</h1>
-<ul>
-    <?php foreach ($this->newsList as $news) : ?>
-      <li><?= $news['title'] ?></li>
-    <?php endforeach; ?>
-</ul>
+<?php foreach ($this->newsList as $news) : ?>
+  <div class="card mb-5">
+    <div class="card-header">
+      <h2 class="mb-0"><?= $news['title'] ?></h2>
+    </div>
+    <div class="card-body">
+      <p><em>Bad Soden, am <?= $news['date'] ?></em></p>
+        <?= $news['text'] ?>
+    </div>
+  </div>
+<?php endforeach; ?>
