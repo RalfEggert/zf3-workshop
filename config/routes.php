@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use News\Handler\CreateNewsHandler;
 use News\Handler\ListNewsHandler;
 use News\Handler\ShowNewsHandler;
 use Psr\Container\ContainerInterface;
@@ -42,4 +43,5 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     $app->get('/news', ListNewsHandler::class, 'news-list');
     $app->get('/news/:id', ShowNewsHandler::class, 'news-show')->setOptions($idOptions);
+    $app->route('/news/create', CreateNewsHandler::class, ['GET', 'POST'], 'news-create');
 };

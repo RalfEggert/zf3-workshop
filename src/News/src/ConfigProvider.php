@@ -2,13 +2,16 @@
 
 namespace News;
 
+use News\Form\NewsForm;
+use News\Handler\CreateNewsHandler;
+use News\Handler\CreateNewsHandlerFactory;
 use News\Handler\ListNewsHandler;
 use News\Handler\ListNewsHandlerFactory;
 use News\Handler\ShowNewsHandler;
 use News\Handler\ShowNewsHandlerFactory;
-use News\Repository\NewsRepository;
 use News\Repository\NewsRepositoryFactory;
 use News\Repository\NewsRepositoryInterface;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 /**
  * Class ConfigProvider
@@ -23,8 +26,9 @@ class ConfigProvider
     public function __invoke(): array
     {
         return [
-            'dependencies' => $this->getDependencies(),
-            'templates'    => $this->getTemplates(),
+            'dependencies'  => $this->getDependencies(),
+            'form_elements' => $this->getFormElements(),
+            'templates'     => $this->getTemplates(),
         ];
     }
 
@@ -35,10 +39,23 @@ class ConfigProvider
     {
         return [
             'factories' => [
-                ListNewsHandler::class => ListNewsHandlerFactory::class,
-                ShowNewsHandler::class => ShowNewsHandlerFactory::class,
+                ListNewsHandler::class   => ListNewsHandlerFactory::class,
+                ShowNewsHandler::class   => ShowNewsHandlerFactory::class,
+                CreateNewsHandler::class => CreateNewsHandlerFactory::class,
 
                 NewsRepositoryInterface::class => NewsRepositoryFactory::class,
+            ],
+        ];
+    }
+
+    public function getFormElements()
+    {
+        return [
+            'factories' => [
+                NewsForm::class => InvokableFactory::class,
+            ],
+            'shared'    => [
+                NewsForm::class => true,
             ],
         ];
     }
