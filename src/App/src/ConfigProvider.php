@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Config\PipelineDelegatorFactory;
+use App\Config\RouterDelegatorFactory;
+use Zend\Expressive\Application;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 /**
@@ -34,6 +37,12 @@ class ConfigProvider
     public function getDependencies(): array
     {
         return [
+            'delegators' => [
+                Application::class => [
+                    PipelineDelegatorFactory::class,
+                    RouterDelegatorFactory::class,
+                ],
+            ],
             'factories'  => [
                 Handler\PingHandler::class     => InvokableFactory::class,
                 Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,

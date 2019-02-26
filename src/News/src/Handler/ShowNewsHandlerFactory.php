@@ -33,6 +33,11 @@ class ShowNewsHandlerFactory implements FactoryInterface
         /** @var UrlHelper $urlHelper */
         $urlHelper = $container->get(UrlHelper::class);
 
-        return new ShowNewsHandler($template, $newsRepository, $urlHelper);
+        $handler = new ShowNewsHandler();
+        $handler->setTemplate($template);
+        $handler->setNewsRepository($newsRepository);
+        $handler->setUrlHelper($urlHelper);
+
+        return $handler;
     }
 }

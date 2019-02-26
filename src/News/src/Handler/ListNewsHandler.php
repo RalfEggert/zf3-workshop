@@ -2,12 +2,12 @@
 
 namespace News\Handler;
 
-use News\Repository\NewsRepositoryInterface;
+use App\Template\TemplateAwareTrait;
+use News\Repository\NewsRepositoryAwareTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Expressive\Template\TemplateRendererInterface;
 
 /**
  * Class ListNewsHandler
@@ -16,23 +16,8 @@ use Zend\Expressive\Template\TemplateRendererInterface;
  */
 class ListNewsHandler implements RequestHandlerInterface
 {
-    /** @var TemplateRendererInterface */
-    private $template;
-
-    /** @var NewsRepositoryInterface */
-    private $newsRepository;
-
-    /**
-     * ListNewsHandler constructor.
-     *
-     * @param TemplateRendererInterface $template
-     * @param NewsRepositoryInterface   $newsRepository
-     */
-    public function __construct(TemplateRendererInterface $template, NewsRepositoryInterface $newsRepository)
-    {
-        $this->template       = $template;
-        $this->newsRepository = $newsRepository;
-    }
+    use NewsRepositoryAwareTrait;
+    use TemplateAwareTrait;
 
     /**
      * @param ServerRequestInterface $request

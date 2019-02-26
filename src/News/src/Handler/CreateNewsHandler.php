@@ -2,15 +2,15 @@
 
 namespace News\Handler;
 
-use News\Form\NewsForm;
-use News\Repository\NewsRepositoryInterface;
+use App\Helper\UrlHelperAwareTrait;
+use App\Template\TemplateAwareTrait;
+use News\Form\NewsFormAwareTrait;
+use News\Repository\NewsRepositoryAwareTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
-use Zend\Expressive\Helper\UrlHelper;
-use Zend\Expressive\Template\TemplateRendererInterface;
 
 /**
  * Class CreateNewsHandler
@@ -19,35 +19,10 @@ use Zend\Expressive\Template\TemplateRendererInterface;
  */
 class CreateNewsHandler implements RequestHandlerInterface
 {
-    /** @var NewsForm */
-    private $newsForm;
-
-    /** @var NewsRepositoryInterface */
-    private $newsRepository;
-
-    /** @var TemplateRendererInterface */
-    private $template;
-
-    /** @var UrlHelper */
-    private $urlHelper;
-
-    /**
-     * CreateNewsHandler constructor.
-     *
-     * @param NewsForm                  $newsForm
-     * @param NewsRepositoryInterface   $newsRepository
-     * @param TemplateRendererInterface $template
-     * @param UrlHelper                 $urlHelper
-     */
-    public function __construct(
-        NewsForm $newsForm, NewsRepositoryInterface $newsRepository, TemplateRendererInterface $template,
-        UrlHelper $urlHelper
-    ) {
-        $this->newsForm       = $newsForm;
-        $this->newsRepository = $newsRepository;
-        $this->template       = $template;
-        $this->urlHelper      = $urlHelper;
-    }
+    use NewsRepositoryAwareTrait;
+    use NewsFormAwareTrait;
+    use TemplateAwareTrait;
+    use UrlHelperAwareTrait;
 
     /**
      * @param ServerRequestInterface $request

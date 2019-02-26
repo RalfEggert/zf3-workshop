@@ -41,6 +41,12 @@ class CreateNewsHandlerFactory implements FactoryInterface
         /** @var UrlHelper $urlHelper */
         $urlHelper = $container->get(UrlHelper::class);
 
-        return new CreateNewsHandler($newsForm, $newsRepository, $template, $urlHelper);
+        $handler = new CreateNewsHandler();
+        $handler->setTemplate($template);
+        $handler->setNewsRepository($newsRepository);
+        $handler->setNewsForm($newsForm);
+        $handler->setUrlHelper($urlHelper);
+
+        return $handler;
     }
 }

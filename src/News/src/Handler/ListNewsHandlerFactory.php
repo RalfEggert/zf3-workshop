@@ -29,6 +29,10 @@ class ListNewsHandlerFactory implements FactoryInterface
         /** @var NewsRepositoryInterface $newsRepository */
         $newsRepository = $container->get(NewsRepositoryInterface::class);
 
-        return new ListNewsHandler($template, $newsRepository);
+        $handler = new ListNewsHandler();
+        $handler->setTemplate($template);
+        $handler->setNewsRepository($newsRepository);
+
+        return $handler;
     }
 }

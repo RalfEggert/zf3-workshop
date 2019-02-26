@@ -2,14 +2,14 @@
 
 namespace News\Handler;
 
-use News\Repository\NewsRepositoryInterface;
+use App\Helper\UrlHelperAwareTrait;
+use App\Template\TemplateAwareTrait;
+use News\Repository\NewsRepositoryAwareTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
-use Zend\Expressive\Helper\UrlHelper;
-use Zend\Expressive\Template\TemplateRendererInterface;
 
 /**
  * Class ShowNewsHandler
@@ -18,29 +18,9 @@ use Zend\Expressive\Template\TemplateRendererInterface;
  */
 class ShowNewsHandler implements RequestHandlerInterface
 {
-    /** @var TemplateRendererInterface */
-    private $template;
-
-    /** @var NewsRepositoryInterface */
-    private $newsRepository;
-
-    /** @var UrlHelper */
-    private $urlHelper;
-
-    /**
-     * ShowNewsHandler constructor.
-     *
-     * @param TemplateRendererInterface $template
-     * @param NewsRepositoryInterface   $newsRepository
-     * @param UrlHelper                 $urlHelper
-     */
-    public function __construct(
-        TemplateRendererInterface $template, NewsRepositoryInterface $newsRepository, UrlHelper $urlHelper
-    ) {
-        $this->template = $template;
-        $this->newsRepository = $newsRepository;
-        $this->urlHelper = $urlHelper;
-    }
+    use NewsRepositoryAwareTrait;
+    use TemplateAwareTrait;
+    use UrlHelperAwareTrait;
 
     /**
      * @param ServerRequestInterface $request
@@ -61,7 +41,7 @@ class ShowNewsHandler implements RequestHandlerInterface
             return new RedirectResponse($this->urlHelper->generate('news-list'));
         }
 
-        $data     = [
+        $data = [
             'news' => $news,
         ];
 

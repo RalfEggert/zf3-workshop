@@ -2,6 +2,7 @@
 
 namespace News;
 
+use News\Config\RouterDelegatorFactory;
 use News\Form\NewsForm;
 use News\Handler\CreateNewsHandler;
 use News\Handler\CreateNewsHandlerFactory;
@@ -12,6 +13,7 @@ use News\Handler\ShowNewsHandlerFactory;
 use News\InputFilter\NewsInputFilter;
 use News\Repository\NewsRepositoryFactory;
 use News\Repository\NewsRepositoryInterface;
+use Zend\Expressive\Application;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 /**
@@ -40,6 +42,11 @@ class ConfigProvider
     public function getDependencies(): array
     {
         return [
+            'delegators' => [
+                Application::class => [
+                    RouterDelegatorFactory::class,
+                ],
+            ],
             'factories' => [
                 ListNewsHandler::class   => ListNewsHandlerFactory::class,
                 ShowNewsHandler::class   => ShowNewsHandlerFactory::class,
