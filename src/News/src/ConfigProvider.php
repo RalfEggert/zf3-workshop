@@ -9,6 +9,7 @@ use News\Handler\ListNewsHandler;
 use News\Handler\ListNewsHandlerFactory;
 use News\Handler\ShowNewsHandler;
 use News\Handler\ShowNewsHandlerFactory;
+use News\InputFilter\NewsInputFilter;
 use News\Repository\NewsRepositoryFactory;
 use News\Repository\NewsRepositoryInterface;
 use Zend\ServiceManager\Factory\InvokableFactory;
@@ -28,6 +29,7 @@ class ConfigProvider
         return [
             'dependencies'  => $this->getDependencies(),
             'form_elements' => $this->getFormElements(),
+            'input_filters' => $this->getInputFilters(),
             'templates'     => $this->getTemplates(),
         ];
     }
@@ -48,7 +50,10 @@ class ConfigProvider
         ];
     }
 
-    public function getFormElements()
+    /**
+     * @return array
+     */
+    public function getFormElements(): array
     {
         return [
             'factories' => [
@@ -56,6 +61,21 @@ class ConfigProvider
             ],
             'shared'    => [
                 NewsForm::class => true,
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getInputFilters(): array
+    {
+        return [
+            'factories' => [
+                NewsInputFilter::class => InvokableFactory::class,
+            ],
+            'shared'    => [
+                NewsInputFilter::class => true,
             ],
         ];
     }

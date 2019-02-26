@@ -3,6 +3,8 @@
 namespace News\Repository;
 
 use Interop\Container\ContainerInterface;
+use News\InputFilter\NewsInputFilter;
+use Zend\InputFilter\InputFilterPluginManager;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
@@ -21,8 +23,14 @@ class NewsRepositoryFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+        /** @var InputFilterPluginManager $inputFilterManager */
+        $inputFilterManager = $container->get(InputFilterPluginManager::class);
+
         $data = require PROJECT_PATH . '/data/news/data.php';
 
-        return new NewsRepository($data);
+        /** @var NewsInputFilter $newsInputFilter */
+        $newsInputFilter = $inputFilterManager->get(NewsInputFilter::class);
+
+        return new NewsRepository($data, $newsInputFilter);
     }
 }

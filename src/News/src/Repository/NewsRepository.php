@@ -2,6 +2,8 @@
 
 namespace News\Repository;
 
+use News\InputFilter\NewsInputFilter;
+
 /**
  * Class NewsRepository
  *
@@ -12,14 +14,19 @@ class NewsRepository implements NewsRepositoryInterface
     /** @var array */
     private $data = [];
 
+    /** @var NewsInputFilter */
+    private $newsInputFilter;
+
     /**
      * NewsRepository constructor.
      *
-     * @param array $data
+     * @param array           $data
+     * @param NewsInputFilter $newsInputFilter
      */
-    public function __construct(array $data)
+    public function __construct(array $data, NewsInputFilter $newsInputFilter)
     {
-        $this->data = $data;
+        $this->data            = $data;
+        $this->newsInputFilter = $newsInputFilter;
     }
 
     /**
@@ -54,24 +61,35 @@ class NewsRepository implements NewsRepositoryInterface
 
     /**
      * @param int   $nextId
-     * @param array $postData
+     * @param array $unfilteredData
      *
-     * @return bool
+     * @return array
      */
-    public function createNews(int $nextId, array $postData): bool
+    public function createNews(int $nextId, array $unfilteredData): array
     {
-        $postData['date'] = date('Y-m-d');
+        $this->newsInputFilter->setData($unfilteredData);
 
-        unset($postData['submit']);
+        if (false === $this->newsInputFilter->isValid()) {
+            return [
+                'success' => false,
+                'errors'  => $this->newsInputFilter->getMessages(),
+            ];
+        }
 
-        $this->data[$nextId] = $postData;
+        $filteredData = $this->newsInputFilter->getValues();
+
+        $filteredData['date'] = date('Y-m-d');
+
+        $this->data[$nextId] = $filteredData;
 
         $fileName = PROJECT_PATH . '/data/news/data.php';
 
         file_put_contents($fileName, '<?php return ' . var_export($this->data, true) . ';');
 
-        sleep(1);
+        sleep(3);
 
-        return true;
+        return [
+            'success' => true,
+        ];
     }
 }

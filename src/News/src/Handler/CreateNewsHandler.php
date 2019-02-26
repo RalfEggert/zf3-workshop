@@ -61,9 +61,14 @@ class CreateNewsHandler implements RequestHandlerInterface
 
             $nextId = $this->newsRepository->getNextId();
 
-            if ($this->newsRepository->createNews($nextId, $postData)) {
+            $result = $this->newsRepository->createNews($nextId, $postData);
+
+            if ($result['success'] === true) {
                 return new RedirectResponse($this->urlHelper->generate('news-show', ['id' => $nextId]));
             }
+
+            $this->newsForm->setData($postData);
+            $this->newsForm->setMessages($result['errors']);
         }
 
         $data = [

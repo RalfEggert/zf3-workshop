@@ -28,9 +28,9 @@ interface NewsRepositoryInterface
 
     /**
      * @param int   $nextId
-     * @param array $postData
+     * @param array $unfilteredData
      *
-     * @return bool
+     * @return array
      */
-    public function createNews(int $nextId, array $postData): bool;
+    public function createNews(int $nextId, array $unfilteredData): array;
 }
